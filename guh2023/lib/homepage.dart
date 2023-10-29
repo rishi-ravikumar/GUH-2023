@@ -4,6 +4,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'navbar.dart';
 import 'globals.dart';
 import 'snakegame.dart';
+import 'youtubepage.dart';
 
 String titletxt = "Available points: " + points.toString();
 
