@@ -4,10 +4,9 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'navbar.dart';
 import 'globals.dart';
 import 'snakegame.dart';
-
-String titletxt = "Available points: " + points.toString();
 import 'package:guh2023/youtubepage.dart';
 
+String titletxt = "Available points: " + points.toString();
 
 class HomePage extends StatelessWidget {
   @override
