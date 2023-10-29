@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
-
+import 'globals.dart';
+import 'package:guh2023/homepage.dart';
 import 'package:flutter/material.dart';
 
 class SnakeGamePage extends StatefulWidget {
@@ -17,14 +18,35 @@ class _SnakeGamePageState extends State<SnakeGamePage> {
   List<int> borderList = [];
   List<int> snakePosition = [];
   int snakeHead = 0;
-  int score = 11;
+  int score = 0;
   late Direction direction;
   late int foodPoistion;
 
   @override
   void initState() {
+    Timer.periodic(const Duration(seconds: 60), (timer) {
+      if (points >= 1) {
+        setState(() {
+          points -= 1;
+        });
+      }
+      if (points < 1) {
+        resetGame();
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => HomePage()));
+      }
+    });
+
     startGame();
     super.initState();
+  }
+
+  void resetGame() {
+    setState(() {
+      // Reset the game variables and state as you did in the `initState`.
+      score = 0;
+      startGame();
+    });
   }
 
   void startGame() {
@@ -37,7 +59,12 @@ class _SnakeGamePageState extends State<SnakeGamePage> {
       updateSnake();
       if (checkCollision()) {
         timer.cancel();
-        showGameOverDialog();
+        if (points < 1) {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => HomePage()));
+        } else {
+          showGameOverDialog();
+        }
       }
     });
   }
@@ -110,7 +137,7 @@ class _SnakeGamePageState extends State<SnakeGamePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-        children: [Expanded(child: _buildGameView()), _buildGameControls()],
+        children: [Expanded(child: _buildGameView()), Expanded(child: _buildGameControls())],
       ),
     );
   }
@@ -133,7 +160,7 @@ class _SnakeGamePageState extends State<SnakeGamePage> {
 
   Widget _buildGameControls() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(10),
       width: double.infinity,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -144,7 +171,7 @@ class _SnakeGamePageState extends State<SnakeGamePage> {
               if (direction != Direction.down) direction = Direction.up;
             },
             icon: const Icon(Icons.arrow_circle_up),
-            iconSize: 100,
+            iconSize: 50,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -154,15 +181,15 @@ class _SnakeGamePageState extends State<SnakeGamePage> {
                   if (direction != Direction.right) direction = Direction.left;
                 },
                 icon: const Icon(Icons.arrow_circle_left_outlined),
-                iconSize: 100,
+                iconSize: 50,
               ),
-              const SizedBox(width: 100),
+              const SizedBox(width: 50),
               IconButton(
                 onPressed: () {
                   if (direction != Direction.left) direction = Direction.right;
                 },
                 icon: const Icon(Icons.arrow_circle_right_outlined),
-                iconSize: 100,
+                iconSize: 50,
               ),
             ],
           ),
@@ -171,7 +198,7 @@ class _SnakeGamePageState extends State<SnakeGamePage> {
               if (direction != Direction.up) direction = Direction.down;
             },
             icon: const Icon(Icons.arrow_circle_down_outlined),
-            iconSize: 100,
+            iconSize: 50,
           ),
         ],
       ),
