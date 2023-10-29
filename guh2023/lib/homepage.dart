@@ -3,6 +3,7 @@ import 'quizbrain.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'navbar.dart';
 import 'globals.dart';
+import 'snakegame.dart';
 
 String titletxt = "Available points: " + points.toString();
 
@@ -37,7 +38,7 @@ class HomePage extends StatelessWidget {
                 ),
                 Container(
                   child: Center(
-                    child: Text('3rd Tab'),
+                    child: SnakeGamePage(),
                   ),
                 ),
               ]))
