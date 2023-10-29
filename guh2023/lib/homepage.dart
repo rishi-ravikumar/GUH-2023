@@ -6,7 +6,7 @@ import 'globals.dart';
 import 'snakegame.dart';
 import 'youtubepage.dart';
 
-String titletxt = "Available points: " + points.toString();
+String title_txt = "Available points: " + points.toString();
 
 class HomePage extends StatelessWidget {
   @override
@@ -16,7 +16,7 @@ class HomePage extends StatelessWidget {
       child: Scaffold(
           drawer: Navbar(),
           appBar: AppBar(
-            title: Text(titletxt),
+            title: Text(title_txt),
           ),
           body: Column(
             children: [
@@ -60,41 +60,59 @@ class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
   int score = 0;
 
-  void checkAnswer({required bool userPickedAnswer}) {
+  void checkAnswer({required bool userPickedAnswer}) async {
     bool correctAnswer = quizBrain.getQuestionAnswer();
 
+    if (quiz_completion[quizBrain.quiz_no - 1]) {
+      return;
+    }
+
     setState(() {
-      if (quizBrain.isFinished() == true) {
-        Alert(
-          context: context,
-          title: 'Finished!',
-          desc:
-              'You\'ve reached the end of the quiz, and you have a score of ${score}.',
-        ).show();
-        points += score;
-        titletxt = "Available points: " + points.toString();
-        quizBrain.reset();
-        scoreKeeper.clear();
-        Navigator.push(context,
-            MaterialPageRoute(builder: (BuildContext context) => HomePage()));
+      if (correctAnswer == userPickedAnswer) {
+        quizBrain.nextQuestion();
+        score += 1;
+        scoreKeeper.add(const Icon(
+          Icons.check,
+          color: Colors.green,
+        ));
       } else {
-        if (correctAnswer == userPickedAnswer) {
-          quizBrain.nextQuestion();
-          score += 1;
-          scoreKeeper.add(const Icon(
-            Icons.check,
-            color: Colors.green,
-          ));
-        } else {
-          quizBrain.nextQuestion();
-          score -= 1;
-          scoreKeeper.add(const Icon(
-            Icons.close,
-            color: Colors.red,
-          ));
-        }
+        quizBrain.nextQuestion();
+        if (score >= 1) score -= 1;
+        scoreKeeper.add(const Icon(
+          Icons.close,
+          color: Colors.red,
+        ));
       }
     });
+
+    if (quizBrain.isFinished()) {
+      int finalScore = score;
+      quizBrain.reset();
+      scoreKeeper.clear();
+      title_txt = "Available points: " + points.toString();
+
+      await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Finished!'),
+            content: Text(
+                'You\'ve reached the end of the quiz, and you have a score of $finalScore.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the alert dialog
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => HomePage()));
+                  quiz_completion[quizBrain.quiz_no - 1] = true;
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'question.dart';
+import 'globals.dart';
 
 class QuizBrain {
   late int _questionNumber = 0;
@@ -31,6 +32,10 @@ class QuizBrain {
   }
 
   void nextQuestion() {
+    if (quiz_completion[quiz_no - 1]) {
+      ;
+    }
+
     if (_questionNumber < _questionBank[quiz_no - 1].length - 1) {
       _questionNumber++;
     }
@@ -39,10 +44,18 @@ class QuizBrain {
   // This methods is now acts as a getter and setter (Encapsulation in action).
 
   String getQuestionText() {
+    if (quiz_completion[quiz_no - 1]) {
+      return "You have already attempted this quiz.";
+    }
+
     return _questionBank[quiz_no - 1][_questionNumber].questionText;
   }
 
   bool getQuestionAnswer() {
+    if (quiz_completion[quiz_no - 1]) {
+      return true;
+    }
+
     return _questionBank[quiz_no - 1][_questionNumber].questionAnswer;
   }
 
