@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:guh2023/youtubepage.dart';
+
 
 class HomePage extends StatelessWidget {
   @override
@@ -20,17 +22,17 @@ class HomePage extends StatelessWidget {
                   child: TabBarView(children: [
                 Container(
                   child: Center(
-                    child: Text('1st Tab'),
+                    child: Text('Home'),
                   ),
                 ),
                 Container(
                   child: Center(
-                    child: Text('2nd Tab'),
+                    child: YoutubeScreen(),
                   ),
                 ),
                 Container(
                   child: Center(
-                    child: Text('3rd Tab'),
+                    child: Text('Gaming'),
                   ),
                 ),
               ]))
