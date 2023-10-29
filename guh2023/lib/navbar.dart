@@ -1,47 +1,30 @@
 import 'package:flutter/material.dart';
 import 'quizbrain.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'navbar.dart';
-import 'globals.dart';
 
-class HomePage extends StatelessWidget {
+class Navbar extends StatelessWidget {
+  const Navbar({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-          drawer: Navbar(),
-          appBar: AppBar(
-            title: Text("Points Collected: ${points}"),
-          ),
-          body: Column(
-            children: [
-              TabBar(tabs: [
-                Tab(icon: Icon(Icons.home, color: Colors.deepPurple)),
-                Tab(icon: Icon(Icons.local_movies, color: Colors.deepPurple)),
-                Tab(icon: Icon(Icons.videogame_asset, color: Colors.deepPurple))
-              ]),
-              Expanded(
-                  child: TabBarView(children: [
-                Container(
-                  child: Center(
-                    child: QuizPage(),
-                  ),
-                ),
-                Container(
-                  child: Center(
-                    child: YoutubeScreen(),
-                  ),
-                ),
-                Container(
-                  child: Center(
-                    child: Text('Gaming'),
-                  ),
-                ),
-              ]))
-            ],
-          )),
-    );
+    return Drawer(
+        child: ListView(
+      children: [
+        ListTile(title: Text('Quiz 1')),
+        ListTile(
+          title: Text('Quiz 2'),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => QuizPage()));
+          },
+        ),
+        ListTile(title: Text('Quiz 3')),
+        ListTile(title: Text('Quiz 4')),
+        ListTile(title: Text('Quiz 5'))
+      ],
+    ));
   }
 }
 
@@ -65,9 +48,8 @@ class _QuizPageState extends State<QuizPage> {
           context: context,
           title: 'Finished!',
           desc:
-              'You\'ve reached the end of the quiz, and you have a score of ${score}.',
+              'You\'ve reached the end of the quiz, !!!!!and you have a score of ${score}.',
         ).show();
-        points += score;
         quizBrain.reset();
         scoreKeeper.clear();
       } else {
