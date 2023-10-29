@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'homepage.dart';
+import 'globals.dart';
+
 
 class YoutubeScreen extends StatefulWidget {
 
@@ -14,11 +16,11 @@ class _YoutubeScreenState extends State<YoutubeScreen> {
 
   final stopwatch = Stopwatch();
   bool completionStatus = false;
-    double stopWatchTime = 0;
-    var roundedWatchedTime = 0;
+  double stopWatchTime = 0;
+  var roundedWatchedTime = 0;
 
   YoutubePlayerController _controller = YoutubePlayerController(
-    initialVideoId: 'QjvpjXdgugA',
+    initialVideoId: 'hKqri_XuIWw',
     flags: YoutubePlayerFlags(
       mute: false,
       autoPlay: false,
@@ -29,19 +31,19 @@ class _YoutubeScreenState extends State<YoutubeScreen> {
   void initState() {
     super.initState();
     _controller = YoutubePlayerController(
-      initialVideoId: 'QjvpjXdgugA',
+      initialVideoId: 'hKqri_XuIWw',
       flags: YoutubePlayerFlags(
         mute: false,
         autoPlay: false,
       ),
     )..addListener(() {
-      var totalDuration = 0;
       if (mounted && _controller.value.isPlaying){
         roundedWatchedTime = 0;
         stopwatch.start();
         stopWatchTime = stopwatch.elapsedMilliseconds / 1000;
         roundedWatchedTime = stopWatchTime.round();
-        if (roundedWatchedTime >= 10) {
+        if ((roundedWatchedTime/60) >= points) {
+          points = 0;
           _controller.pause();
           stopwatch.stop();
           stopWatchTime = 0;
@@ -62,27 +64,36 @@ class _YoutubeScreenState extends State<YoutubeScreen> {
         print('Nothing');
       }
 
+      // if (mounted && roundedWatchedTime >= points){
+      //   _controller.pause();
+      // }
+
+
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: 
-      SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column( children: [
-              YoutubePlayer(
-              controller: _controller,
-              showVideoProgressIndicator: true,
-              onReady: () {
-                print('Player is ready.');
-              },
-            ),
-      ]
-    ))));
-  }
+    return YoutubePlayerBuilder(
+      player: YoutubePlayer(
+      controller: _controller,
+      showVideoProgressIndicator: true,
+      onReady: () {
+        print('Player is ready.');
+      },
+      ),
+      builder: (context, player) => Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Youtube Player Flutter',
+            style: TextStyle(color: Colors.white),
+          )
+        ),
+        body: Column(
+            children: [
+              player,
+            ]
+        )));
+    }
 }
