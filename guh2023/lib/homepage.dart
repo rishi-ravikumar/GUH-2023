@@ -4,6 +4,8 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'navbar.dart';
 import 'globals.dart';
 
+String titletxt = "Available points: " + points.toString();
+
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -12,7 +14,7 @@ class HomePage extends StatelessWidget {
       child: Scaffold(
           drawer: Navbar(),
           appBar: AppBar(
-            title: Text("Points Collected: ${points}"),
+            title: Text(titletxt),
           ),
           body: Column(
             children: [
@@ -68,8 +70,11 @@ class _QuizPageState extends State<QuizPage> {
               'You\'ve reached the end of the quiz, and you have a score of ${score}.',
         ).show();
         points += score;
+        titletxt = "Available points: " + points.toString();
         quizBrain.reset();
         scoreKeeper.clear();
+        Navigator.push(context,
+            MaterialPageRoute(builder: (BuildContext context) => HomePage()));
       } else {
         if (correctAnswer == userPickedAnswer) {
           quizBrain.nextQuestion();
