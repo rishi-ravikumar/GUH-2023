@@ -137,7 +137,7 @@ class _SnakeGamePageState extends State<SnakeGamePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-        children: [Expanded(child: _buildGameView()), _buildGameControls()],
+        children: [Expanded(child: _buildGameView()), Expanded(child: _buildGameControls())],
       ),
     );
   }
@@ -160,7 +160,7 @@ class _SnakeGamePageState extends State<SnakeGamePage> {
 
   Widget _buildGameControls() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(10),
       width: double.infinity,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -171,7 +171,7 @@ class _SnakeGamePageState extends State<SnakeGamePage> {
               if (direction != Direction.down) direction = Direction.up;
             },
             icon: const Icon(Icons.arrow_circle_up),
-            iconSize: 100,
+            iconSize: 50,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -181,15 +181,15 @@ class _SnakeGamePageState extends State<SnakeGamePage> {
                   if (direction != Direction.right) direction = Direction.left;
                 },
                 icon: const Icon(Icons.arrow_circle_left_outlined),
-                iconSize: 100,
+                iconSize: 50,
               ),
-              const SizedBox(width: 100),
+              const SizedBox(width: 50),
               IconButton(
                 onPressed: () {
                   if (direction != Direction.left) direction = Direction.right;
                 },
                 icon: const Icon(Icons.arrow_circle_right_outlined),
-                iconSize: 100,
+                iconSize: 50,
               ),
             ],
           ),
@@ -198,7 +198,7 @@ class _SnakeGamePageState extends State<SnakeGamePage> {
               if (direction != Direction.up) direction = Direction.down;
             },
             icon: const Icon(Icons.arrow_circle_down_outlined),
-            iconSize: 100,
+            iconSize: 50,
           ),
         ],
       ),
