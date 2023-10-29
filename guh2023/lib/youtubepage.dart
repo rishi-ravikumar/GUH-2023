@@ -70,13 +70,19 @@ class _YoutubeScreenState extends State<YoutubeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: YoutubePlayer(
-        controller: _controller,
-        showVideoProgressIndicator: true,
-        onReady: () {
-          print('Player is ready.');
-        },
-      ),
-    );
+      body: 
+      SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column( children: [
+              YoutubePlayer(
+              controller: _controller,
+              showVideoProgressIndicator: true,
+              onReady: () {
+                print('Player is ready.');
+              },
+            ),
+      ]
+    ))));
   }
 }
