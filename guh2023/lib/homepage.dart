@@ -4,7 +4,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'navbar.dart';
 import 'globals.dart';
 import 'snakegame.dart';
-import 'youtubepage.dart';
+import 'package:guh2023/youtubepage.dart';
 
 String title_txt = "Available points: " + points.toString();
 
@@ -67,29 +67,10 @@ class _QuizPageState extends State<QuizPage> {
       return;
     }
 
-    setState(() {
-      if (correctAnswer == userPickedAnswer) {
-        quizBrain.nextQuestion();
-        score += 1;
-        scoreKeeper.add(const Icon(
-          Icons.check,
-          color: Colors.green,
-        ));
-      } else {
-        quizBrain.nextQuestion();
-        if (score >= 1) score -= 1;
-        scoreKeeper.add(const Icon(
-          Icons.close,
-          color: Colors.red,
-        ));
-      }
-    });
-
     if (quizBrain.isFinished()) {
       int finalScore = score;
       quizBrain.reset();
       scoreKeeper.clear();
-      title_txt = "Available points: " + points.toString();
 
       await showDialog(
         context: context,
@@ -101,6 +82,7 @@ class _QuizPageState extends State<QuizPage> {
             actions: <Widget>[
               TextButton(
                 onPressed: () {
+                  title_txt = "Available points: " + points.toString();
                   Navigator.of(context).pop(); // Close the alert dialog
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => HomePage()));
@@ -112,6 +94,24 @@ class _QuizPageState extends State<QuizPage> {
           );
         },
       );
+    } else {
+      setState(() {
+        if (correctAnswer == userPickedAnswer) {
+          quizBrain.nextQuestion();
+          score += 1;
+          scoreKeeper.add(const Icon(
+            Icons.check,
+            color: Colors.green,
+          ));
+        } else {
+          quizBrain.nextQuestion();
+          if (score >= 1) score -= 1;
+          scoreKeeper.add(const Icon(
+            Icons.close,
+            color: Colors.red,
+          ));
+        }
+      });
     }
   }
 
